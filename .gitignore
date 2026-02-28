@@ -1,0 +1,8 @@
+# Secrets / tokens
+**/*secret*
+**/*token*
+**/.env
+**/.env.*
+# Shell history
+.zsh_history
+.bash_history
