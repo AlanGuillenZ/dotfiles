@@ -1,14 +1,14 @@
-#!/usr/bin/env bash
-set -euo pipefail
+#!/usr/bin/env sh
+set -eu
 
-DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-OS="$(uname -s)"
-CURRENT_SHELL="$(basename "${SHELL:-unknown}")"
+DOTFILES_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+OS=$(uname -s)
+CURRENT_SHELL=$(basename "${SHELL:-unknown}")
 
 ensure_dir() {
-  local dir_path="$1"
+  dir_path="$1"
 
-  if [[ -d "$dir_path" ]]; then
+  if [ -d "$dir_path" ]; then
     echo "📁 Ya existe: $dir_path"
   else
     mkdir -p "$dir_path"
@@ -17,18 +17,19 @@ ensure_dir() {
 }
 
 link_file() {
-  local source_file="$1"
-  local target_file="$2"
+  source_file="$1"
+  target_file="$2"
+  target_dir=$(dirname "$target_file")
 
-  if [[ ! -f "$source_file" ]]; then
+  if [ ! -f "$source_file" ]; then
     echo "⚠️  No existe el archivo fuente: $source_file"
-    return
+    return 0
   fi
 
-  ensure_dir "$(dirname "$target_file")"
+  ensure_dir "$target_dir"
 
-  if [[ -e "$target_file" && ! -L "$target_file" ]]; then
-    local backup_file="${target_file}.backup.$(date +%Y%m%d%H%M%S)"
+  if [ -e "$target_file" ] && [ ! -L "$target_file" ]; then
+    backup_file="${target_file}.backup.$(date +%Y%m%d%H%M%S)"
     mv "$target_file" "$backup_file"
     echo "📦 Backup creado: $backup_file"
   fi
@@ -38,20 +39,19 @@ link_file() {
 }
 
 setup_shell_configs() {
-  local has_bash=0
-  local has_zsh=0
+  has_shell=0
 
   if command -v bash >/dev/null 2>&1; then
-    has_bash=1
+    has_shell=1
     link_file "$DOTFILES_DIR/bash/.bashrc" "$HOME/.bashrc"
   fi
 
   if command -v zsh >/dev/null 2>&1; then
-    has_zsh=1
+    has_shell=1
     link_file "$DOTFILES_DIR/zsh/.zshrc" "$HOME/.zshrc"
   fi
 
-  if [[ "$has_bash" -eq 0 && "$has_zsh" -eq 0 ]]; then
+  if [ "$has_shell" -eq 0 ]; then
     echo "⚠️  No se detectó bash ni zsh en este sistema."
   fi
 

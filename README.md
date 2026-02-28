@@ -13,7 +13,7 @@ Este repositorio configura un entorno de terminal ligero y portable para **macOS
 ## Instalación
 
 ```bash
-./install.sh
+sh ./install.sh
 ```
 
 El script:
@@ -23,6 +23,26 @@ El script:
 3. Hace backup si encuentra archivos locales que no son symlinks.
 4. Detecta si tienes `bash`, `zsh` o ambos y configura lo disponible.
 5. Muestra recomendaciones específicas para macOS o Linux.
+
+
+## Si GitHub marca conflicto en tu PR
+
+Si ves *"This branch has conflicts"*, normalmente necesitas actualizar tu rama con la rama base:
+
+```bash
+git fetch origin
+git rebase origin/main
+# resuelve archivos en conflicto, luego:
+git add <archivo>
+git rebase --continue
+```
+
+Si prefieres merge en vez de rebase:
+
+```bash
+git fetch origin
+git merge origin/main
+```
 
 ## Requisitos recomendados
 
