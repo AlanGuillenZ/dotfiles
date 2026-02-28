@@ -45,6 +45,21 @@ git merge origin/main
 git push
 ```
 
+
+## Script rápido para resolver conflicto de PR
+
+Si te sigue apareciendo el conflicto en GitHub, puedes usar este helper local:
+
+```bash
+./resolve-pr-conflict.sh main origin
+```
+
+Luego sube la rama actualizada:
+
+```bash
+git push --force-with-lease
+```
+
 ## Requisitos recomendados
 
 ### macOS
