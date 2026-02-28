@@ -8,7 +8,7 @@ Este repositorio configura un entorno de terminal ligero y portable para **macOS
 - `starship/starship.toml`: prompt simple con directorio + git.
 - `bash/.bashrc`: inicialización segura de Starship para Bash.
 - `zsh/.zshrc`: inicialización segura de Starship para Zsh.
-- `install.sh`: instalador con symlinks, backup automático, detección de carpetas existentes y soporte multi-shell.
+- `install.sh`: instalador POSIX (`sh`) con symlinks, backup automático y detección de carpetas/shells.
 
 ## Instalación
 
@@ -24,24 +24,25 @@ El script:
 4. Detecta si tienes `bash`, `zsh` o ambos y configura lo disponible.
 5. Muestra recomendaciones específicas para macOS o Linux.
 
-
 ## Si GitHub marca conflicto en tu PR
 
-Si ves *"This branch has conflicts"*, normalmente necesitas actualizar tu rama con la rama base:
+Si GitHub muestra **"This branch has conflicts"** en `README.md` o `install.sh`, actualiza tu rama con `main` y resuelve localmente:
 
 ```bash
 git fetch origin
 git rebase origin/main
-# resuelve archivos en conflicto, luego:
-git add <archivo>
+# resuelve conflictos, luego:
+git add README.md install.sh
 git rebase --continue
+git push --force-with-lease
 ```
 
-Si prefieres merge en vez de rebase:
+Si prefieres merge:
 
 ```bash
 git fetch origin
 git merge origin/main
+git push
 ```
 
 ## Requisitos recomendados
@@ -66,4 +67,3 @@ Puedes usar tu gestor de paquetes favorito (apt, dnf, pacman, etc.).
 
 - Ghostty usa tema TokyoNight y JetBrains Mono Nerd Font.
 - Bash y Zsh cargan Starship solo si está instalado (sin romper el shell si falta).
-

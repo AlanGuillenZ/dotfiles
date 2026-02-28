@@ -7,13 +7,25 @@ CURRENT_SHELL=$(basename "${SHELL:-unknown}")
 
 ensure_dir() {
   dir_path="$1"
-
   if [ -d "$dir_path" ]; then
     echo "📁 Ya existe: $dir_path"
   else
     mkdir -p "$dir_path"
     echo "📁 Creada: $dir_path"
   fi
+}
+
+create_symlink() {
+  source_file="$1"
+  target_file="$2"
+
+  # Quita symlink previo o archivo normal después del backup.
+  if [ -L "$target_file" ] || [ -e "$target_file" ]; then
+    rm -f "$target_file"
+  fi
+
+  ln -s "$source_file" "$target_file"
+  echo "🔗 Vinculado: $target_file -> $source_file"
 }
 
 link_file() {
@@ -34,8 +46,7 @@ link_file() {
     echo "📦 Backup creado: $backup_file"
   fi
 
-  ln -sfn "$source_file" "$target_file"
-  echo "🔗 Vinculado: $target_file -> $source_file"
+  create_symlink "$source_file" "$target_file"
 }
 
 setup_shell_configs() {
